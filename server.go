@@ -254,6 +254,9 @@ func (s *Server) handleQuery(query *dns.Msg, from net.Addr) error {
 // The response to a question may be transmitted over multicast, unicast, or
 // both.  The return values are DNS records for each transmission type.
 func (s *Server) handleQuestion(q dns.Question) (multicastRecs, unicastRecs []dns.RR) {
+	if strings.Contains(q.Name, "workstation") {
+		log.Printf("Received query for %s", q.Name)
+	}
 	records := s.config.Zone.Records(q)
 
 	if len(records) == 0 {
